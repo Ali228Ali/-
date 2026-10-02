@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>С Днём Учителя! | Интерактивное поздравление</title>
+    <!-- Google Fonts: Montserrat & Caveat -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-dark: #0d0d11;
+            --bg-card: rgba(20, 20, 29, 0.65);
+            --bg-card-hover: rgba(30, 25, 48, 0.85);
+            
+            --purple-glow: #8b5cf6;
+            --purple-bright: #a855f7;
+            --purple-deep: #6d28d9;
+            --gold-accent: #eab308;
+            --gold-light: #fef08a;
+            
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            
+            --border-glass: rgba(168, 85, 247, 0.2);
+            --border-glow: rgba(168, 85, 247, 0.7);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Montserrat', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            line-height: 1.6;
+        }
+
+        /* Canvas Fireworks Background Layer */
+        #fireworks-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 99;
+        }
+
+        /* Animated Glowing Background Orbs */
+        .bg-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(100px);
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.45;
+            animation: pulseOrb 12s infinite alternate ease-in-out;
+        }
+
+        .orb-1 {
+            top: -10%;
+            left: 20%;
+            width: 450px;
+            height: 450px;
+            background: radial-gradient(circle, var(--purple-bright), transparent 70%);
+        }
+
+        .orb-2 {
+            bottom: 10%;
+            right: 5%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, var(--purple-deep), transparent 70%);
+            animation-delay: -6s;
+        }
+
+        .orb-3 {
+            top: 45%;
+            left: -10%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(234, 179, 8, 0.2), transparent 70%);
+            animation-delay: -3s;
+        }
+
+        @keyframes pulseOrb {
+            0% { transform: scale(1) translate(0, 0); opacity: 0.35; }
+            50% { transform: scale(1.15) translate(30px, -20px); opacity: 0.55; }
+            100% { transform: scale(0.9) translate(-20px, 20px); opacity: 0.35; }
+        }
+
+        /* Container Layout */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 20px 60px 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 60px 20px 40px 20px;
+            margin-bottom: 50px;
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-glass);
+            border-radius: 24px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(139, 92, 246, 0.15);
+            position: relative;
+            overflow: hidden;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--purple-bright), var(--gold-accent), var(--purple-bright), transparent);
+        }
+
+        .badge {
+            display: inline-block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--gold-accent);
+            background: rgba(234, 179, 8, 0.1);
+            border: 1px solid rgba(234, 179, 8, 0.3);
+            padding: 6px 18px;
+            border-radius: 50px;
+            margin-bottom: 24px;
+        }
+
+        .hero-title {
+            font-size: 2.8rem;
+            font-weight: 800;
+            line-height: 1.25;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #ffffff 0%, var(--purple-bright) 60%, var(--gold-accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-subtitle {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            max-width: 750px;
+            margin: 0 auto 35px auto;
+            font-weight: 400;
+        }
+
+        /* Buttons Styling */
+        .btn-fireworks {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            color: #ffffff;
+            background: linear-gradient(135deg, var(--purple-bright) 0%, var(--purple-deep) 100%);
+            border: none;
+            padding: 16px 36px;
+            border-radius: 50px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 0 25px rgba(168, 85, 247, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-fireworks:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 0 40px rgba(168, 85, 247, 0.8), 0 10px 20px rgba(0, 0, 0, 0.4);
+            background: linear-gradient(135deg, #b866ff 0%, #7c3aed 100%);
+        }
+
+        .btn-fireworks:active {
+            transform: translateY(1px) scale(0.98);
+        }
+
+        .btn-fireworks i {
+            color: var(--gold-accent);
+            font-size: 1.2rem;
+            animation: spinStar 3s infinite linear;
+        }
+
+        @keyframes spinStar {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Section Titles */
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 40px;
+            color: var(--text-main);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--purple-bright), var(--gold-accent));
+            border-radius: 2px;
+        }
+
+        /* Disciplines Cards Grid */
+        .disciplines-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 60px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-glass);
+            border-radius: 20px;
+            padding: 30px 25px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top right, rgba(168, 85, 247, 0.15), transparent 60%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            background: var(--bg-card-hover);
+            border-color: var(--border-glow);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 25px rgba(168, 85, 247, 0.3);
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .card-icon {
+            width: 55px;
+            height: 55px;
+            border-radius: 16px;
+            background: rgba(139, 92, 246, 0.15);
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            color: var(--gold-accent);
+            box-shadow: 0 0 15px rgba(139, 92, 246, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover .card-icon {
+            transform: scale(1.1) rotate(5deg);
+            background: rgba(168, 85, 247, 0.25);
+            color: var(--gold-light);
+            box-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
+        }
+
+        .card-subject {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .card-wish {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-footer-tag {
+            margin-top: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--purple-bright);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Scroll / Letter Congratulation Section */
+        .congratulation-scroll {
+            background: linear-gradient(145deg, rgba(22, 18, 36, 0.9), rgba(12, 10, 20, 0.95));
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(234, 179, 8, 0.3);
+            border-radius: 24px;
+            padding: 50px 40px;
+            margin-bottom: 60px;
+            position: relative;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 30px rgba(234, 179, 8, 0.1);
+        }
+
+        .scroll-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .scroll-icon {
+            font-size: 2.5rem;
+            color: var(--gold-accent);
+            margin-bottom: 10px;
+        }
+
+        .scroll-text {
+            font-family: 'Caveat', cursive;
+            font-size: 1.8rem;
+            line-height: 1.6;
+            color: #fef08a;
+            text-align: center;
+            max-width: 850px;
+            margin: 0 auto;
+            text-shadow: 0 0 10px rgba(234, 179, 8, 0.2);
+        }
+
+        /* Interactive Generator Module */
+        .generator-box {
+            background: var(--bg-card);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border-glass);
+            border-radius: 24px;
+            padding: 40px 30px;
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        .quote-display {
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 25px 0;
+            padding: 20px;
+            background: rgba(13, 13, 17, 0.6);
+            border-radius: 16px;
+            border-left: 4px solid var(--purple-bright);
+        }
+
+        .quote-text {
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: var(--text-main);
+            font-style: italic;
+            transition: opacity 0.3s ease;
+        }
+
+        .btn-secondary {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--gold-accent);
+            background: rgba(234, 179, 8, 0.1);
+            border: 1px solid rgba(234, 179, 8, 0.4);
+            padding: 12px 28px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(234, 179, 8, 0.2);
+            border-color: var(--gold-accent);
+            transform: scale(1.03);
+            box-shadow: 0 0 20px rgba(234, 179, 8, 0.3);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        footer strong {
+            color: var(--purple-bright);
+        }
+
+        /* Keyframes Animation */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+            .scroll-text {
+                font-size: 1.5rem;
+            }
+            .congratulation-scroll {
+                padding: 30px 20px;
+            }
+            .generator-box {
+                padding: 25px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Fireworks HTML5 Canvas -->
+    <canvas id="fireworks-canvas"></canvas>
+
+    <!-- Glowing background elements -->
+    <div class="bg-orb orb-1"></div>
+    <div class="bg-orb orb-2"></div>
+    <div class="bg-orb orb-3"></div>
+
+    <div class="container">
+
+        <!-- 1. Hero Section -->
+        <header class="hero">
+            <span class="badge"><i class="fa-solid fa-crown"></i> Праздничный день</span>
+            <h1 class="hero-title">С Днём учителя, уважаемые преподаватели!</h1>
+            <p class="hero-subtitle">
+                Примите наши самые искренние поздравления! Ваш огромный труд, педагогическая мудрость, неиссякаемое терпение и вера в каждого студента формируют наш путь и открывают двери в будущее.
+            </p>
+            <button class="btn-fireworks" id="fireworksBtn">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> Запустить праздничный салют!
+            </button>
+        </header>
+
+        <!-- 2. Disciplines Cards Section -->
+        <main>
+            <h2 class="section-title">Благодарность по направлениям</h2>
+            
+            <div class="disciplines-grid">
+                
+                <!-- IT -->
+                <article class="card">
+                    <div>
+                        <div class="card-header">
+                            <div class="card-icon"><i class="fa-solid fa-laptop-code"></i></div>
+                            <h3 class="card-subject">IT и Программирование</h3>
+                        </div>
+                        <p class="card-wish">«Кода без багов, быстрого деплоя и бесконечного вдохновения!»</p>
+                    </div>
+                    <div class="card-footer-tag"><i class="fa-solid fa-terminal"></i> High Tech</div>
+                </article>
+
+                <!-- History -->
+                <article class="card">
+                    <div>
+                        <div class="card-header">
+                            <div class="card-icon"><i class="fa-solid fa-landmark"></i></div>
+                            <h3 class="card-subject">История и Социальные науки</h3>
+                        </div>
+                        <p class="card-wish">«Интересных исторических параллелей, гармонии в обществе и мудрых решений!»</p>
+                    </div>
+                    <div class="card-footer-tag"><i class="fa-solid fa-scroll"></i> Wisdom & Society</div>
+                </article>
+
+                <!-- Economics -->
+                <article class="card">
+                    <div>
+                        <div class="card-header">
+                            <div class="card-icon"><i class="fa-solid fa-chart-line"></i></div>
+                            <h3 class="card-subject">Экономика и Бизнес</h3>
+                        </div>
+                        <p class="card-wish">«Стабильного роста, идеального баланса и высокого ROI во всех начинаниях!»</p>
+                    </div>
+                    <div class="card-footer-tag"><i class="fa-solid fa-coins"></i> Growth & Balance</div>
+                </article>
+
+                <!-- PE & Sports -->
+                <article class="card">
+                    <div>
+                        <div class="card-header">
+                            <div class="card-icon"><i class="fa-solid fa-person-running"></i></div>
+                            <h3 class="card-subject">Физическая культура и Спорт</h3>
+                        </div>
+                        <p class="card-wish">«Неиссякаемого запаса энергии, 100% аптайма организма и новых личных рекордов!»</p>
+                    </div>
+                    <div class="card-footer-tag"><i class="fa-solid fa-trophy"></i> Energy & Power</div>
+                </article>
+
+                <!-- Humanities -->
+                <article class="card">
+                    <div>
+                        <div class="card-header">
+                            <div class="card-icon"><i class="fa-solid fa-book-open"></i></div>
+                            <h3 class="card-subject">Гуманитарные науки и Языки</h3>
+                        </div>
+                        <p class="card-wish">«Красоты мысли, красноречия и глубокого понимания каждой строки!»</p>
+                    </div>
+                    <div class="card-footer-tag"><i class="fa-solid fa-pen-nib"></i> Inspiration & Arts</div>
+                </article>
+
+            </div>
+
+            <!-- 3. Congratulation Scroll -->
+            <section class="congratulation-scroll">
+                <div class="scroll-header">
+                    <div class="scroll-icon"><i class="fa-solid fa-feather-pointed"></i></div>
+                </div>
+                <div class="scroll-text">
+                    «Дорогие и уважаемые наставники! Спасибо вам за то, что щедро делитесь знаниями, учите нас мыслить глубже, верить в свои силы и никогда не сдаваться перед сложными задачами. Каждый ваш урок — это вклад в наш будущий успех!»
+                </div>
+            </section>
+
+            <!-- 4. Interactive Wishes Generator -->
+            <section class="generator-box">
+                <h3 style="font-size: 1.4rem; font-weight: 700; margin-bottom: 10px;">
+                    <i class="fa-solid fa-dice" style="color: var(--purple-bright); margin-right: 8px;"></i>
+                    Генератор праздничных предсказаний
+                </h3>
+                <p style="color: var(--text-muted); font-size: 0.95rem;">Нажмите на кнопку ниже, чтобы получить персональное пожелание на сегодня:</p>
+                
+                <div class="quote-display">
+                    <p class="quote-text" id="quoteText">«Пусть каждый проведенный урок приносит радость, а студенты радуют блестящими ответами!»</p>
+                </div>
+
+                <button class="btn-secondary" id="generateBtn">
+                    <i class="fa-solid fa-rotate"></i> Сгенерировать случайное пожелание
+                </button>
+            </section>
+
+        </main>
+
+        <!-- 5. Footer -->
+        <footer>
+            <p>С уважением и благодарностью, студенты Вашего колледжа (2026)</p>
+        </footer>
+
+    </div>
+
+    <script>
+        /* === Interactive Quote Generator Logic === */
+        const quotes = [
+            "Пусть каждый проведенный урок приносит радость, а студенты радуют блестящими ответами!",
+            "Желаем лёгких рабочих будней, отзывчивых коллег и отличного настроения каждый день!",
+            "Пусть все ваши профессиональные и личные цели достигаются легко и непринужденно!",
+            "Крепкого вам здоровья, душевной гармонии и неугасающего вдохновения!",
+            "Пусть ваша мудрость и дальше освещает путь новым поколениям специалистов!",
+            "Желаем 100% успеваемости во всех группах и искренней благодарности учеников!",
+            "Пусть жизнь будет наполнена яркими эмоциями, путешествиями и уютом!",
+            "Желаем бесконечного запаса терпения, оптимизма и новых творческих высот!",
+            "Пусть в Вашем доме всегда царят тепло, благополучие и радость!",
+            "Спасибо за ваш неоценимый вклад! Пусть удача сопутствует вам во всех делах!"
+        ];
+
+        const quoteText = document.getElementById('quoteText');
+        const generateBtn = document.getElementById('generateBtn');
+
+        generateBtn.addEventListener('click', () => {
+            quoteText.style.opacity = '0';
+            setTimeout(() => {
+                const randomIndex = Math.floor(Math.random() * quotes.length);
+                quoteText.textContent = `«${quotes[randomIndex]}»`;
+                quoteText.style.opacity = '1';
+            }, 300);
+            
+            // Also trigger small firework on quote generate
+            createFireworkBurst(window.innerWidth / 2, window.innerHeight / 2);
+        });
+
+        /* === HTML5 Canvas Fireworks System === */
+        const canvas = document.getElementById('fireworks-canvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        let particles = [];
+
+        class Particle {
+            constructor(x, y, color) {
+                this.x = x;
+                this.y = y;
+                this.color = color;
+                // Random velocity
+                const angle = Math.random() * Math.PI * 2;
+                const speed = Math.random() * 6 + 2;
+                this.vx = Math.cos(angle) * speed;
+                this.vy = Math.sin(angle) * speed;
+                this.alpha = 1;
+                this.decay = Math.random() * 0.015 + 0.01;
+                this.gravity = 0.08;
+                this.size = Math.random() * 3 + 2;
+            }
+
+            update() {
+                this.vx *= 0.98;
+                this.vy *= 0.98;
+                this.vy += this.gravity;
+                this.x += this.vx;
+                this.y += this.vy;
+                this.alpha -= this.decay;
+            }
+
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.alpha;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = this.color;
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        const fireworksColors = ['#a855f7', '#8b5cf6', '#eab308', '#fef08a', '#ec4899', '#38bdf8'];
+
+        function createFireworkBurst(x, y) {
+            const particleCount = 60;
+            for (let i = 0; i < particleCount; i++) {
+                const color = fireworksColors[Math.floor(Math.random() * fireworksColors.length)];
+                particles.push(new Particle(x, y, color));
+            }
+        }
+
+        function triggerGrandFireworks() {
+            const bursts = 7;
+            for (let i = 0; i < bursts; i++) {
+                setTimeout(() => {
+                    const x = Math.random() * (canvas.width * 0.8) + (canvas.width * 0.1);
+                    const y = Math.random() * (canvas.height * 0.5) + (canvas.height * 0.1);
+                    createFireworkBurst(x, y);
+                }, i * 250);
+            }
+        }
+
+        function animateFireworks() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            for (let i = particles.length - 1; i >= 0; i--) {
+                particles[i].update();
+                particles[i].draw();
+                if (particles[i].alpha <= 0) {
+                    particles.splice(i, 1);
+                }
+            }
+
+            requestAnimationFrame(animateFireworks);
+        }
+
+        // Start animation loop
+        animateFireworks();
+
+        // Button listener
+        document.getElementById('fireworksBtn').addEventListener('click', () => {
+            triggerGrandFireworks();
+        });
+
+        // Launch intro fireworks on load
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                triggerGrandFireworks();
+            }, 500);
+        });
+    </script>
+</body>
+</html>
